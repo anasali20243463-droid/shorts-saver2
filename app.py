@@ -25,7 +25,7 @@ def download_video(url):
 
     ydl_opts = {
         'format': 'best',
-        'outtmpl': './downloads/%(title)s_%(id)s.%(ext)s',
+        'outtmpl': '%(title)s_%(id)s.%(ext)s'
         'progress_hooks': [progress_hook]
     }
 
@@ -60,4 +60,8 @@ def progress():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    import os
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
