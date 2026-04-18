@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Downloading</title>
+
+<style>
+
+body{
+font-family:Arial;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#1d4350,#a43931);
+color:white;
+}
+
+.box{
+background:white;
+color:black;
+padding:40px;
+border-radius:20px;
+width:420px;
+text-align:center;
+box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+
+.bar{
+width:100%;
+height:25px;
+background:#ddd;
+border-radius:20px;
+overflow:hidden;
+margin-top:20px;
+}
+
+.progress{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#00c6ff,#0072ff);
+transition:0.3s;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>⬇ Downloading Video</h2>
+
+<div class="bar">
+<div class="progress" id="progress"></div>
+</div>
+
+<p id="percent">0%</p>
+
+<h3 id="done"></h3>
+
+</div>
+
+<form id="downloadForm" method="POST" action="/start_download">
+<input type="hidden" name="url" value="{{url}}">
+</form>
+
+<script>
+
+document.getElementById("downloadForm").submit()
+
+var source = new EventSource("/progress")
+
+source.onmessage = function(event){
+
+let data = JSON.parse(event.data)
+
+let percent = data.percent
+
+document.getElementById("progress").style.width = percent + "%"
+
+document.getElementById("percent").innerText = percent + "%"
+
+if(percent >= 100){
+
+document.getElementById("done").innerHTML="✅ Download Complete!"
+
+source.close()
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
