@@ -24,10 +24,17 @@ def download_video(url):
     progress_data["percent"] = 0
 
     ydl_opts = {
-        'format': 'best',
-        'outtmpl': '%(title)s_%(id)s.%(ext)s'
-        'progress_hooks': [progress_hook]
+    'format': 'best',
+    'outtmpl': '%(title)s.%(ext)s',
+    'progress_hooks': [progress_hook],
+    'quiet': True,
+    'no_warnings': True,
+    'extractor_args': {
+        'youtube': {
+            'skip': ['dash', 'hls']
+        }
     }
+}
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
